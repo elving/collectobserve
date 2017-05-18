@@ -1,0 +1,25 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# dependencies
+node_modules
+
+# testing
+coverage
+
+# production
+build
+cdn
+www
+
+# misc
+.DS_Store
+.env
+npm-debug.log
+.idea/
+.deployer.conf
+
+# old
+app
+
+# Deploy configuration
+.deploy.conf

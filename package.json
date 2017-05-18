@@ -1,0 +1,29 @@
+{
+  "name": "collectobserve",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "scrapeLiveFeedCams": "node ./tasks/scrape-livefeed-cams.js",
+    "scrapeLiveStillCams": "node ./tasks/scrape-livestill-cams.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.4.0",
+    "cheerio": "^0.22.0",
+    "dotenv": "^4.0.0",
+    "easyimage": "^2.1.0",
+    "fs-extra": "^3.0.1",
+    "gifencoder": "^1.0.6",
+    "jsonfile": "^3.0.0",
+    "lodash": "^4.17.4",
+    "png-file-stream": "^1.0.0",
+    "request": "^2.81.0",
+    "twit": "^2.2.5"
+  },
+  "engines": {
+    "npm": "4.2.0",
+    "node": "7.10.0"
+  }
+}
