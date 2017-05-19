@@ -1,6 +1,6 @@
 {
   "name": "collectobserve",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "collect to observe. observe to collect.",
   "main": "index.js",
   "scripts": {
