@@ -1,6 +1,6 @@
 {
   "name": "collectobserve",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "collect to observe. observe to collect.",
   "main": "index.js",
   "scripts": {
@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "async": "^2.4.0",
+    "canvas": "git://github.com/elspoono/node-canvas-heroku.git",
     "cheerio": "^0.22.0",
     "dotenv": "^4.0.0",
     "easyimage": "^2.1.0",
