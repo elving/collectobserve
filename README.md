@@ -17,7 +17,7 @@ Preview prints the generated caption and saves a GIF under `tmp/capture-*/cam.gi
 
 ## Publish to X
 
-The GitHub Actions workflow publishes a five-second Race Rocks animation and a generated caption through Buffer. It uses five distinct snapshots from OpenTopia's public animation view. The workflow needs the `BUFFER_API_KEY` repository secret, the `BUFFER_CHANNEL_ID` repository variable, and a public `collectobserve-media` release. A manual workflow run can preview the GIF or publish one post. Set the `PUBLISH_HOURLY` repository variable to `true` to publish hourly.
+The GitHub Actions workflow picks a random camera from the bundled OpenTopia snapshot catalog and publishes a five-second GIF with a generated caption through Buffer. It uses five distinct snapshots from the camera's public animation view. The workflow needs the `BUFFER_API_KEY` repository secret, the `BUFFER_CHANNEL_ID` repository variable, and a public `collectobserve-media` release. A manual workflow run can preview the GIF or publish one post. Set the `PUBLISH_HOURLY` repository variable to `true` to publish hourly.
 
 ### Direct X API
 

@@ -52,8 +52,8 @@ async function main() {
   if (!preview && (!key || !channelId || !repo || !/^\d+$/.test(runId ?? ''))) {
     throw new Error('Publishing requires Buffer credentials and a GitHub Actions run')
   }
-  const feed = process.env.CAM_FEED || 'https://images.opentopia.com/cams/19458/big.jpg'
-  const gif = await generateGif({ feed, history: true })
+  const gif = await generateGif({ feed: process.env.CAM_FEED, history: true })
+  console.log(`Captured GIF from ${gif.cam.feed}`)
   const text = generateStatus()
   if (preview) {
     console.log(`Preview saved to ${gif.path}`)
