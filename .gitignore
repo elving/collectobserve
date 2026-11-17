@@ -14,8 +14,7 @@ www
 # misc
 .DS_Store
 .env
-/tmp/capture-*/
-/tmp/cams-*
+/tmp/
 npm-debug.log
 .idea/
 .deployer.conf
