@@ -4,29 +4,19 @@
   "description": "collect to observe. observe to collect.",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "node --env-file-if-exists=.env index.js",
+    "preview": "node --env-file-if-exists=.env index.js --preview",
     "scrapeLiveFeedCams": "node ./tasks/scrape-livefeed-cams.js",
     "scrapeLiveStillCams": "node ./tasks/scrape-livestill-cams.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "async": "^2.4.0",
-    "canvas": "git://github.com/elspoono/node-canvas-heroku.git",
-    "cheerio": "^0.22.0",
-    "dotenv": "^4.0.0",
-    "easyimage": "^2.1.0",
-    "fs-extra": "^3.0.1",
-    "gifencoder": "^1.0.6",
-    "jsonfile": "^3.0.0",
-    "lodash": "^4.17.4",
-    "nodemon": "^1.11.0",
-    "png-file-stream": "^1.0.0",
-    "request": "^2.81.0",
-    "twit": "^2.2.5"
+    "cheerio": "^1.2.0",
+    "lodash": "^4.18.1",
+    "twitter-api-v2": "^1.31.0"
   },
   "engines": {
-    "npm": "4.2.0",
-    "node": "7.10.0"
+    "node": ">=22.9.0"
   }
 }
