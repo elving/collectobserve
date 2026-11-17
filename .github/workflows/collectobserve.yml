@@ -1,0 +1,41 @@
+name: CollectObserve
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: Publish one GIF to @collectobserve
+        type: boolean
+        default: false
+  schedule:
+    - cron: '17 * * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: collectobserve-publishing
+  cancel-in-progress: false
+
+jobs:
+  capture:
+    if: github.event_name == 'workflow_dispatch' || vars.PUBLISH_HOURLY == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg
+      - run: npm ci
+      - name: Preview GIF
+        if: github.event_name == 'workflow_dispatch' && !inputs.publish
+        run: node tasks/publish-buffer.js --preview
+      - name: Publish GIF
+        if: github.event_name == 'schedule' || inputs.publish
+        run: node tasks/publish-buffer.js
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          BUFFER_CHANNEL_ID: ${{ vars.BUFFER_CHANNEL_ID }}
+          GH_TOKEN: ${{ github.token }}
