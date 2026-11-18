@@ -47,8 +47,14 @@ jobs:
         if: steps.hourly.outputs.uploaded != 'true'
         with:
           node-version: '24'
-      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg
+      - name: Install FFmpeg
         if: steps.hourly.outputs.uploaded != 'true'
+        run: |
+          if [[ -f /etc/apt/apt-mirrors.txt ]]; then
+            sudo sed -Ei 's#^https?://[^/]+\.ec2\.archive\.ubuntu\.com/ubuntu/?#https://archive.ubuntu.com/ubuntu/#' /etc/apt/apt-mirrors.txt
+          fi
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends ffmpeg
       - run: npm ci
         if: steps.hourly.outputs.uploaded != 'true'
       - name: Preview GIF
