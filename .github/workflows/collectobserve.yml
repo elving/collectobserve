@@ -8,7 +8,7 @@ on:
         type: boolean
         default: false
   schedule:
-    - cron: '13 * * * *'
+    - cron: '13,23,33,43,53 * * * *'
 
 permissions:
   contents: write
@@ -23,17 +23,39 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 8
     steps:
+      - name: Check this hour's uploads
+        id: hourly
+        if: github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          hour=$(date -u +%Y-%m-%dT%H:)
+          release=$(gh release view collectobserve-media --repo "$GITHUB_REPOSITORY" --json databaseId --jq .databaseId)
+          assets=$(gh api --paginate --slurp "repos/$GITHUB_REPOSITORY/releases/$release/assets?per_page=100")
+          uploaded=$(jq --arg hour "$hour" 'any(.[][];
+            .state == "uploaded" and
+            (.name | test("^collectobserve-[0-9]+[.]gif$")) and
+            (.created_at | startswith($hour))
+          )' <<< "$assets")
+          echo "uploaded=$uploaded" >> "$GITHUB_OUTPUT"
+          if [[ "$uploaded" == true ]]; then
+            echo 'A GIF was already uploaded for this hour. Skipping this scheduled run.'
+          fi
       - uses: actions/checkout@v4
+        if: steps.hourly.outputs.uploaded != 'true'
       - uses: actions/setup-node@v4
+        if: steps.hourly.outputs.uploaded != 'true'
         with:
           node-version: '24'
       - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg
+        if: steps.hourly.outputs.uploaded != 'true'
       - run: npm ci
+        if: steps.hourly.outputs.uploaded != 'true'
       - name: Preview GIF
         if: github.event_name == 'workflow_dispatch' && !inputs.publish
         run: node tasks/publish-buffer.js --preview
       - name: Publish GIF
-        if: github.event_name == 'schedule' || inputs.publish
+        if: steps.hourly.outputs.uploaded != 'true' && (github.event_name == 'schedule' || inputs.publish)
         run: node tasks/publish-buffer.js
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
