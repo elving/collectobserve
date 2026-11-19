@@ -1,0 +1,18 @@
+[build]
+  command = "mkdir -p .netlify/public"
+  publish = ".netlify/public"
+
+[build.environment]
+  NODE_VERSION = "24"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+[functions.capture-background]
+external_node_modules = ["ffmpeg-static", "lodash"]
+included_files = [
+  "node_modules/ffmpeg-static/ffmpeg",
+  "node_modules/lodash/package.json",
+  "node_modules/lodash/lodash.js",
+]

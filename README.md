@@ -17,6 +17,24 @@ Preview prints the generated caption and saves a GIF under `tmp/capture-*/cam.gi
 
 ## Publish to X
 
+### Netlify
+
+Netlify starts a capture at minute `13` of each hour, stores the GIF in Netlify Blobs, and serves it to Buffer from the app's public HTTPS URL. Set `BUFFER_API_KEY`, `BUFFER_CHANNEL_ID`, and a random `COLLECTOBSERVE_JOB_KEY` as production secrets in the project settings. On Netlify Free, use the default scopes for secrets. To preview a capture, POST `{"preview":true}` to `/.netlify/functions/capture-background` with the job key in the `X-CollectObserve-Job-Key` header. The function log includes the preview GIF URL.
+
+Run `npx netlify-cli blobs:set collectobserve settings/hourly enabled` in the linked project to enable hourly posting. Change the value to `disabled` to pause it. These changes take effect without a redeploy.
+
+When deploying from macOS, prepare the Linux x64 function bundle before running the Netlify CLI:
+
+```sh
+npm ci --ignore-scripts
+npm_config_platform=linux npm_config_arch=x64 node node_modules/ffmpeg-static/install.js
+npx netlify-cli deploy --prod
+```
+
+Disable the GitHub Actions workflow when switching to the Netlify schedule.
+
+### GitHub Actions
+
 The GitHub Actions workflow picks a random camera from the bundled OpenTopia snapshot catalog and publishes a five-second GIF with a generated caption through Buffer. It uses five distinct snapshots from the camera's public animation view. The workflow needs the `BUFFER_API_KEY` repository secret, the `BUFFER_CHANNEL_ID` repository variable, and a public `collectobserve-media` release. A manual workflow run can preview the GIF or publish one post. Set the `PUBLISH_HOURLY` repository variable to `true` to enable scheduled posts. GitHub gets several chances to start the workflow each hour. Scheduled runs skip capture once a publishing run has uploaded a GIF in the current UTC hour.
 
 ### Direct X API

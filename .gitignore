@@ -15,6 +15,7 @@ www
 .DS_Store
 .env
 /tmp/
+.netlify/
 npm-debug.log
 .idea/
 .deployer.conf
